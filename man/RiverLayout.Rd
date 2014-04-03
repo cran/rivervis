@@ -1,0 +1,92 @@
+\name{RiverLayout}
+\alias{RiverLayout}
+
+\title{
+  River Layout Coordinates Calculation
+}
+
+\description{
+This function calculates best fit plotting coordinates to enable rivers to be shown on river charts. The output is a list, which can be used when plotting the river chart and the information on the river chart. It provides an opportunity to change the coordinates and other plotting parameters before actually plotting.
+}
+
+\usage{
+RiverLayout(river, length, parent, position, distance, 
+            direction = 1, margin = 0.5)
+}
+
+\arguments{
+  \item{river}{
+    a vector of river names.
+  }
+  \item{length}{
+    a vector of river lengths.
+  }
+  \item{parent}{
+    a vector of river parents. The parent of a river is the river into which it flows. 
+    The parent of the main stream is "NA".
+  }
+  \item{position}{
+    a vector of river positions. The river position indicates its position relative to its parent - whether it is a left bank river, right bank river or main stream. The left bank river is on the left when looking downstream of its parent. The right bank river is on the right when looking downstream of its parent.
+    The value of position can be "R", "L" or "M". For the main stream, the value is "M".
+  }
+  \item{distance}{
+    a vector of distances denotes the distance between the mouths of each river and the mouths of each river's parent. 
+  }
+  
+  \item{direction}{
+    a value. In the river chart, rivers flow from right to left (\code{direction = 1}), or from left to right (\code{direction = -1}). By default, \code{direction = 1}.
+  }
+  \item{margin}{
+    a value. The margin height between rivers in the topological plot. By default, \code{margin = 0.5} and margin height is 0.5 times the river height in the river chart.
+  }
+
+}
+
+\value{
+  The \code{RiverLayout} returns a list containing the data for river chart plotting. The list includes,
+  \item{riverdata}{a data frame. This contains input vectors \code{river}, \code{length}, \code{parent}, \code{position} and \code{distance}. It also includes calculated x-coordinates of river mouths (\code{rmouth}) and sources (\code{rsource}), defined in the same units as the inputs \code{length} and \code{distance}. The last vector included is the row number  for each river (\code{row}), in which the main stream has a fixed row number of 0.}
+  \item{H.MAX}{the number of river rows.}
+  \item{H.SIZE}{the height of each river row in the topological plot.}
+  \item{W.MAX}{the width of river layout, in the same units as \code{length} and \code{distance}.}
+  \item{W.SIZE}{the reciprocal of \code{W.MAX}.}
+  \item{X1}{normalised x-coordinate of river mouths.}  
+  \item{X2}{normalised x-coordinate of river sources.}
+  \item{Y}{normalised y-coordinate of rivers.}
+  \item{direction}{flow direction. Rivers flow from right to left (\code{direction = 1}), or from left to right (\code{direction = -1}).}
+    
+}
+
+\author{
+  Feng Mao
+}
+
+\note{
+  There is one and only one mainstream input for each function call.
+}
+
+
+
+\seealso{
+  \code{\link{RiverDraw}},
+  \code{\link{RiverMap}}.
+}
+
+\examples{
+
+data(Ballinderry)
+
+# River flows right
+riverlayout <- RiverLayout(B.river$River,B.river$Length,
+                           B.river$Parent,B.river$Position,
+                           B.river$Distance, direction = -1)
+
+# River flows left
+riverlayout.left <- RiverLayout(B.river$River,B.river$Length,
+                                B.river$Parent,B.river$Position,
+                                B.river$Distance)
+
+str(riverlayout)
+}
+
+\keyword{hplot}
+
