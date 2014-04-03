@@ -111,9 +111,9 @@ legend(x = 0.8, y = 0.45, inset=0.05,
        pt.cex = c(NA, 2,2,2.5),
        cex = 0.8)
 
-RiverScale(2, "2 km", riverlayout, loc = c(0.8, 0.2), lbl.cex = 0.8)
+RiverScale(2, "2 km", riverlayout, loc = c(0.8, 0.1), lbl.cex = 0.8)
 
-RiverDirection(riverlayout, loc = c(0.8, 0.15), arw.length = 0.03, lbl.cex = 0.8)
+RiverDirection(riverlayout, loc = c(0.8, 0.05), arw.length = 0.03, lbl.cex = 0.8)
 
 # Example 2
 
@@ -142,9 +142,9 @@ legend(x = 0.8, y = 0.43, inset=0.05,
        pt.bg = c(rep(NA, 5), "blue", "blue"),
        cex = 0.8)
 
-RiverScale(2, "2 km", riverlayout, loc = c(0.8, 0.1), lbl.cex = 0.8)
+RiverScale(2, "2 km", riverlayout, loc = c(0.6, 0.1), lbl.cex = 0.8)
 
-RiverDirection(riverlayout, arw.length = 0.03, loc = c(0.8, 0.05), lbl.cex = 0.8)
+RiverDirection(riverlayout, arw.length = 0.03, loc = c(0.6, 0.05), lbl.cex = 0.8)
 
 
 # Example 3

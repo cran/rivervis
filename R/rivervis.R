@@ -1,5 +1,5 @@
 # Version -------------------
-# rivervis_v0.38.1
+# rivervis_v0.38.3
 # R 3.0.1
 
 # Path building -----------------------------------------------------------
@@ -86,18 +86,22 @@ RowCal <- function(posmatrix, digitweight, riverlayout, path, OBN, DIGITMAX){
   k <- data.frame(k[order(k$s,k$rmouth),],row)
   
   for (i in 2:OBNLEFT){
-    if (all(k$rmouth[i] > k$rsource[k$row == (i-1)]) | 
-          all(k$rsource[i] < k$rmouth[k$row == (i-1)])){
-      k$row[i] <- k$row[i]-1
+    j = i
+    while (all(k$rmouth[i] > k$rsource[k$row == (j-1)]) | 
+             all(k$rsource[i] < k$rmouth[k$row == (j-1)])){
+      k$row[i] <- j - 1
+      j = j - 1
     }
   }
   
   for (i in (OBNLEFT+3):OBN){
-    if (all(k$rmouth[i] > k$rsource[k$row == (OBNLEFT+2-i)]) | 
-          all(k$rsource[i] < k$rmouth[k$row == (OBNLEFT+2-i)])){
-      k$row[i] <- k$row[i]+1
+    j = i
+    while (all(k$rmouth[i] > k$rsource[k$row == (OBNLEFT+2-j)]) | 
+             all(k$rsource[i] < k$rmouth[k$row == (OBNLEFT+2-j)])){
+      k$row[i] <- OBNLEFT+2-j
+      j = j - 1
     }
-  }                     
+  }                    
   
   #  row <- matrix(k$row, dimnames = list(rownames(k),"Row"))
   row <- data.frame(river = rownames(k), row = -k$row)

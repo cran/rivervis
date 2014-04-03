@@ -1,6 +1,6 @@
-48928dab65986bf27d605f9538df930d *DESCRIPTION
+e845e8a325e552c9e43823eba1fcea66 *DESCRIPTION
 d4d707d2a867938f27fd6a278a1bb3cc *NAMESPACE
-a3f268450d72508908c7dd4208cf797b *R/rivervis.R
+aa3d6710538bee58e1dfe769208b874c *R/rivervis.R
 0d1da71e80d618463159067968058244 *data/Ballinderry.RData
 1758cbf20a9395083baf48fe6f6c7680 *man/Ballinderry.Rd
 47fb439016a5b357b2bfb9626dbaf3dc *man/RiverAxisLabel.Rd
@@ -18,4 +18,4 @@ b88301c24fe2532cc5a4c906378f5b37 *man/RiverReach.Rd
 9e1f457493463efad0bd2835188558d2 *man/RiverScale.Rd
 9fe7ac4398860a402a51b8f1d471db30 *man/RiverSite.Rd
 8722215208801b217abe67122f38369d *man/RiverTM.Rd
-8d499d6b8393509246bf781416d28188 *man/rivervis-package.Rd
+4659f3eebe7198959504df5c8d6e5931 *man/rivervis-package.Rd
