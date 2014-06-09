@@ -1,8 +1,11 @@
 # Version -------------------
-# rivervis_v0.38.3
+# rivervis_v0.39.1
 # R 3.0.1
 
+# Implicit functions =============
+
 # Path building -----------------------------------------------------------
+
 
 PathBuild <- function(river, parent, OBN){
   p <- cbind(river, parent)
@@ -13,6 +16,7 @@ PathBuild <- function(river, parent, OBN){
   p <- p[,1:(ncol(p)-1)]
   p
 }
+
 
 # Calculate the sum without NA -------------------
 
@@ -51,9 +55,9 @@ RelPos <- function(path, riverlayout, OBN, DIGITMAX){
 # Digit weight-----------------
 
 DigitWeight <- function(DIGITMAX){
-  digitweight <- matrix(NA,(DIGITMAX-1),1)
-  for (i in 1:(DIGITMAX-1)){
-    digitweight[i,1] <- 10^(9-i) # Actually 4 is a much better choice than 10.
+  digitweight <- matrix(NA,DIGITMAX,1)
+  for (i in 1:DIGITMAX){
+    digitweight[i,1] <- 10^(9-i) # Maybe 4 is than 10.
   }
   digitweight
 }
@@ -61,47 +65,96 @@ DigitWeight <- function(DIGITMAX){
 # Relative position numeric matrix ---------------------  
 
 RelPosMatrix <- function(pos, DIGITMAX){
-  p <- pos[,2:(DIGITMAX+1)]
+  
+  if (DIGITMAX>1){
+    p <- pos[,2:(DIGITMAX+1)]
+  }else{
+    p <- as.matrix(pos[,2:(DIGITMAX+1)])
+  }
   #  for (i in 2:(DIGITMAX-1)){
   p[,1][is.na(p[,1])] <- 0
   p[,1][p[,1] == "L"] <- -1
   p[,1][p[,1] == "R"] <- 1
-  p[,2:DIGITMAX][p[,2:DIGITMAX] == "L"] <- 1
-  p[,2:DIGITMAX][is.na(p[,2:DIGITMAX])] <- 2
-  p[,2:DIGITMAX][p[,2:DIGITMAX] == "R"] <- 3
+  if (DIGITMAX>1){
+    p[,2:DIGITMAX][p[,2:DIGITMAX] == "L"] <- 1
+    p[,2:DIGITMAX][is.na(p[,2:DIGITMAX])] <- 2
+    p[,2:DIGITMAX][p[,2:DIGITMAX] == "R"] <- 3
+  }
   #  }
   class(p) <- "numeric"
   p
 }
 
-# Sorting ----------------
+# Sort, and optimise row number ----------------
 
 RowCal <- function(posmatrix, digitweight, riverlayout, path, OBN, DIGITMAX){
-  s <- posmatrix[,2:DIGITMAX] %*% digitweight * posmatrix[,1]
+  if (DIGITMAX > 2){
+    s <- posmatrix[,2:DIGITMAX] %*% digitweight * posmatrix[,1]
+  }else if(DIGITMAX > 1){
+    s <- data.frame(s = posmatrix[,2] * digitweight[2,] * posmatrix[,1])
+  }else{
+    s <- posmatrix[,1] %*% digitweight
+  }
+  
+  
   colnames(s) <- "s"
   OBNLEFT <- length(s[s<0])
   OBNRIGHT <- length(s[s>0])
-  row <- c(c(1:length(s[s<0])),0,c(-1:-length(s[s>0])))
+  
+  if (OBNLEFT*OBNRIGHT != 0){
+    row <- c(c(1:length(s[s<0])),0,c(-1:-length(s[s>0])))
+  }else if(OBNLEFT == 0 & OBNRIGHT != 0){
+    row <- c(0,c(-1:-length(s[s>0])))
+  }else if(OBNRIGHT == 0 & OBNLEFT != 0){
+    row <- c(c(1:length(s[s<0])),0)  
+  }else if(OBNLEFT == 0 & OBNRIGHT == 0){
+    row <- 0
+  }
+  
   k <- data.frame(MouthSource(path, riverlayout, OBN),s)
   k <- data.frame(k[order(k$s,k$rmouth),],row)
   
-  for (i in 2:OBNLEFT){
-    j = i
-    while (all(k$rmouth[i] > k$rsource[k$row == (j-1)]) | 
-             all(k$rsource[i] < k$rmouth[k$row == (j-1)])){
-      k$row[i] <- j - 1
-      j = j - 1
+  # Optimise row numbers
+  
+  # Optimise left side
+  if (OBNLEFT > 1){
+    for (i in 2:OBNLEFT){
+      j = i
+      while (all(k$rmouth[i] > k$rsource[k$row == (j-1)]) | 
+               all(k$rsource[i] < k$rmouth[k$row == (j-1)])){
+        k$row[i] <- j - 1
+        j = j - 1
+      }
+    }
+    for (i in 2:OBNLEFT){
+      j = 1
+      while (all(k$rmouth[i] > k$rsource[k$row == j]) | 
+               all(k$rsource[i] < k$rmouth[k$row == j])){
+        k$row[i] <- j
+        j = j + 1
+      }
     }
   }
   
-  for (i in (OBNLEFT+3):OBN){
-    j = i
-    while (all(k$rmouth[i] > k$rsource[k$row == (OBNLEFT+2-j)]) | 
-             all(k$rsource[i] < k$rmouth[k$row == (OBNLEFT+2-j)])){
-      k$row[i] <- OBNLEFT+2-j
-      j = j - 1
+  # Optimise right side
+  if (OBNRIGHT > 1){
+    for (i in (OBNLEFT+3):OBN){
+      j = i
+      while (all(k$rmouth[i] > k$rsource[k$row == (OBNLEFT+2-j)]) | 
+               all(k$rsource[i] < k$rmouth[k$row == (OBNLEFT+2-j)])){
+        k$row[i] <- OBNLEFT+2-j
+        j = j - 1
+      }
     }
-  }                    
+    for (i in (OBNLEFT+3):OBN){
+      j = 1
+      while (all(k$rmouth[i] > k$rsource[k$row == -j]) | 
+               all(k$rsource[i] < k$rmouth[k$row == -j])){
+        k$row[i] <- OBNLEFT+2-j
+        j = j + 1
+      }
+    }
+  }
   
   #  row <- matrix(k$row, dimnames = list(rownames(k),"Row"))
   row <- data.frame(river = rownames(k), row = -k$row)
@@ -109,8 +162,28 @@ RowCal <- function(posmatrix, digitweight, riverlayout, path, OBN, DIGITMAX){
   row
 }
 
+# TitlePaste =========================
+
+TitlePaste <- function(x){
+  
+  if(length(x)==1){
+    x[[1]]
+  }else{
+    y <- NA
+    
+    for(i in 1:length(x)){
+      y[i] <- paste(x[[i]], collapse = "/")
+      
+    }
+    
+    y
+  }
+  
+}
 
 
+
+## Explicit functions ========================
 # RiverLayout Function ------------
 
 RiverLayout <- function(river, length, parent, position, distance,
@@ -1127,25 +1200,7 @@ RiverReach <- function(reach, river, from, to, group, style, riverlayout,
 }
 
 
-# TitlePaste =========================
 
-TitlePaste <- function(x){
-  
-  if(length(x)==1){
-    x[[1]]
-  }else{
-    y <- NA
-    
-    for(i in 1:length(x)){
-      y[i] <- paste(x[[i]], collapse = "/")
-      
-    }
-    
-    y
-  }
-  
-  
-}
 
 
 
