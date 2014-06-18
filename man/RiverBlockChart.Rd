@@ -15,8 +15,10 @@ RiverBlockChart(site, river, distance, value, arrangement,
                 bg.col = "lightgrey", mar = 0.1, hw.rat = 1.5,
                 site.shw = TRUE, site.pos = 1, site.ofs = 1.5, 
                 site.cex = 0.5, site.col = "black",site.order = "A",
+                site.srt = 0,
                 rvr.shw = TRUE, rvr.ofs = 1.5, rvr.cex = 0.7, 
                 rvr.col = "black", rvr.t.b = "b", rvr.order = NA,
+                rvr.srt = 0,
                 par.shw = TRUE, par.pos = 2, par.ofs = 1, 
                 par.cex = 0.6, par.adj = c(1, 0.5), par.col = "black")
 }
@@ -85,6 +87,9 @@ RiverBlockChart(site, river, distance, value, arrangement,
   \item{site.order}{
     order of sites within each river. Alphabetical order (\code{"A"}), river flow left (\code{"L"}), river flow right (\code{"R"}).
   } 
+  \item{site.srt}{
+    site label rotation in degrees.
+  } 
   \item{rvr.shw}{
     show river labels (\code{TRUE}) or not (\code{FALSE}).
   } 
@@ -102,6 +107,9 @@ RiverBlockChart(site, river, distance, value, arrangement,
   } 
   \item{rvr.order}{
     order of rivers. Alphabetical order (\code{NA}) or a vector of custom order.
+  } 
+  \item{rvr.srt}{
+    river label rotation in degrees.
   } 
   \item{par.shw}{
     show parameter labels (\code{TRUE}) or not (\code{FALSE}).

@@ -1,12 +1,12 @@
-363fc11c6f5e6d35405aa6b9cdceec9f *DESCRIPTION
+9e88bbe21d9068b80406106728f050f5 *DESCRIPTION
 d4d707d2a867938f27fd6a278a1bb3cc *NAMESPACE
-4b89ae3415192f63adb85f3bcf6a6641 *R/rivervis.R
+3b650e4e50be58af4f4f91ed96d22367 *R/rivervis.R
 0d1da71e80d618463159067968058244 *data/Ballinderry.RData
 1758cbf20a9395083baf48fe6f6c7680 *man/Ballinderry.Rd
 47fb439016a5b357b2bfb9626dbaf3dc *man/RiverAxisLabel.Rd
 6b6fad36b589895ef5cbb71c672ec4e8 *man/RiverBar.Rd
 3fe5fab54f0ccfc76c54c452378070f8 *man/RiverBlock.Rd
-c603a325d515204d0a4c5ef85c044d72 *man/RiverBlockChart.Rd
+76af34462a5ea40aea7393810b498093 *man/RiverBlockChart.Rd
 cd37687b50156c0d2b6578deaea365af *man/RiverDirection.Rd
 69713f3c49df1590a165f73c27d8be60 *man/RiverDraw.Rd
 1b76b2c76acb235e3f70d721b045d5d1 *man/RiverFrame.Rd

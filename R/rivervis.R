@@ -1,11 +1,20 @@
 # Version -------------------
-# rivervis_v0.39.1
+# rivervis_v0.39.4
 # R 3.0.1
 
 # Implicit functions =============
+# Function list:
+# PathBuild
+# SumNotNA
+# MouthSource
+# RelPos
+# DigitWeight
+# RelPosMatrix
+# RowCal
+# TitlePaste
+
 
 # Path building -----------------------------------------------------------
-
 
 PathBuild <- function(river, parent, OBN){
   p <- cbind(river, parent)
@@ -57,7 +66,7 @@ RelPos <- function(path, riverlayout, OBN, DIGITMAX){
 DigitWeight <- function(DIGITMAX){
   digitweight <- matrix(NA,DIGITMAX,1)
   for (i in 1:DIGITMAX){
-    digitweight[i,1] <- 10^(9-i) # Maybe 4 is than 10.
+    digitweight[i,1] <- 10^(9-i) # Actually 4 is a much better choice than 10.
   }
   digitweight
 }
@@ -96,7 +105,6 @@ RowCal <- function(posmatrix, digitweight, riverlayout, path, OBN, DIGITMAX){
     s <- posmatrix[,1] %*% digitweight
   }
   
-  
   colnames(s) <- "s"
   OBNLEFT <- length(s[s<0])
   OBNRIGHT <- length(s[s>0])
@@ -126,15 +134,22 @@ RowCal <- function(posmatrix, digitweight, riverlayout, path, OBN, DIGITMAX){
         j = j - 1
       }
     }
+    
     for (i in 2:OBNLEFT){
-      j = 1
-      while (all(k$rmouth[i] > k$rsource[k$row == j]) | 
-               all(k$rsource[i] < k$rmouth[k$row == j])){
-        k$row[i] <- j
-        j = j + 1
+      for (j in 1:k$row[i]){
+        if (all(k$rmouth[i] > k$rsource[k$row == j]) | 
+              all(k$rsource[i] < k$rmouth[k$row == j])){
+          k$row[i] <- j
+          break
+        }
       }
     }
+    
+    
+    
   }
+  
+  
   
   # Optimise right side
   if (OBNRIGHT > 1){
@@ -145,15 +160,18 @@ RowCal <- function(posmatrix, digitweight, riverlayout, path, OBN, DIGITMAX){
         k$row[i] <- OBNLEFT+2-j
         j = j - 1
       }
-    }
+    } 
+    
     for (i in (OBNLEFT+3):OBN){
-      j = 1
-      while (all(k$rmouth[i] > k$rsource[k$row == -j]) | 
-               all(k$rsource[i] < k$rmouth[k$row == -j])){
-        k$row[i] <- OBNLEFT+2-j
-        j = j + 1
+      for (j in -1:k$row[i]){
+        if (all(k$rmouth[i] > k$rsource[k$row == j]) | 
+              all(k$rsource[i] < k$rmouth[k$row == j])){
+          k$row[i] <- j
+          break
+        }
       }
-    }
+      
+    } 
   }
   
   #  row <- matrix(k$row, dimnames = list(rownames(k),"Row"))
@@ -512,7 +530,7 @@ RiverPoint <- function(site, river, distance, value, riverlayout,
   # Point plotting 
   VALUE.MAX <- max(value) # the largest value
   VALUE.MIN <- min(value) # the smallest value
-  VALUE.SIZE <- H.SIZE * 0.9/(VALUE.MAX - VALUE.MIN) # a ratio to turn real elevation to plotting scale, assuming the largest value is 0.9*HSIZE
+  VALUE.SIZE <- H.SIZE * 0.8/(VALUE.MAX - VALUE.MIN) # a ratio to turn real elevation to plotting scale, assuming the largest value is 0.9*HSIZE
   
   # Direction converting
   if (DIRECTION == -1){
@@ -524,7 +542,7 @@ RiverPoint <- function(site, river, distance, value, riverlayout,
     X.VALUE <- X1[match(river, RIVER.DATA$river)] + distance * W.SIZE # use dictionary technique to calculate the X of Elev points on plot
   }
   
-  Y.VALUE <- Y[match(river, RIVER.DATA$river)] + value * VALUE.SIZE + H.SIZE * 0.05 # use dictionary technique to calculate the Y of Elev points on plot
+  Y.VALUE <- Y[match(river, RIVER.DATA$river)] + (value - VALUE.MIN) * VALUE.SIZE + H.SIZE * 0.1 # use dictionary technique to calculate the Y of Elev points on plot
   
   
   V <- data.frame(river=factor(river), X.VALUE, Y.VALUE)
@@ -1225,12 +1243,14 @@ RiverBlockChart <- function(site, river, distance, value, arrangement,
                             site.cex = 0.5,
                             site.col = "black",
                             site.order = "A", # alphabetical order ("A"), river flow left ("L"), river flow right ("R")
+                            site.srt = 0,
                             rvr.shw = TRUE,
                             rvr.ofs = 1.5,
                             rvr.cex = 0.7,
                             rvr.col = "black",
                             rvr.t.b = "b",
                             rvr.order = NA, # alphabetical order (NA) or custom order (a vector)
+                            rvr.srt = 0,
                             par.shw = TRUE,
                             par.pos = 2,
                             par.ofs = 1,
@@ -1357,7 +1377,7 @@ RiverBlockChart <- function(site, river, distance, value, arrangement,
   
   # Site name
   if (site.shw){
-    text(X.SITE+W.BLOCK/2, Y.SITE, A$site, pos= site.pos, offset = site.ofs, cex = site.cex, col = site.col)
+    text(X.SITE+W.BLOCK/2, Y.SITE, A$site, pos= site.pos, offset = site.ofs, cex = site.cex, col = site.col, srt = site.srt)
   }
   
   # River name
@@ -1369,10 +1389,10 @@ RiverBlockChart <- function(site, river, distance, value, arrangement,
     }
     
     if (rvr.t.b == "b"){
-      text((X1.RIVER.BG + X2.RIVER.BG)/2, Y1.RIVER.BG, RIVER.NAME, pos = 1, offset = rvr.ofs, cex = rvr.cex, col = rvr.col)
+      text((X1.RIVER.BG + X2.RIVER.BG)/2, Y1.RIVER.BG, RIVER.NAME, pos = 1, offset = rvr.ofs, cex = rvr.cex, col = rvr.col, srt = rvr.srt)
     } 
     if (rvr.t.b == "t"){
-      text((X1.RIVER.BG + X2.RIVER.BG)/2, Y2.RIVER.BG, RIVER.NAME, pos = 3, offset = rvr.ofs, cex = rvr.cex, col = rvr.col)
+      text((X1.RIVER.BG + X2.RIVER.BG)/2, Y2.RIVER.BG, RIVER.NAME, pos = 3, offset = rvr.ofs, cex = rvr.cex, col = rvr.col, srt = rvr.srt)
     }
     
   }
