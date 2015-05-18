@@ -19,6 +19,12 @@
 #' the main stream, the value is "M".
 #' @param distance a vector of distances denotes the distance between the
 #' mouths of each river and the mouths of each river's parent.
+#' @param row a vector of row numbers. The main stream is on row 0. In the
+#' river chart, rivers with negative row numbers are plotted below the main
+#' stream while rivers with positive row numbers are plotted above the main
+#' stream. If a value for row is provided, the rivers will be plotted according
+#' to the provided row numbers. If a value for row is not provided, a vector of
+#' best fit row numbers will be calculated before plotting.
 #' @param direction a value. In the river chart, rivers flow from right to left
 #' (\code{direction = 1}), or from left to right (\code{direction = -1}). By
 #' default, \code{direction = 1}.
@@ -64,6 +70,7 @@
 #' 
 #' @export RiverLayout
 RiverLayout <- function(river, length, parent, position, distance,
+                        row = NA,
                         direction = 1, 
                         margin = 0.5){
   
@@ -91,7 +98,14 @@ RiverLayout <- function(river, length, parent, position, distance,
   
   # Calculate Row
   
-  riverlayout <- merge(riverlayout, RowCal(posmatrix, digitweight, riverlayout, path, OBN, DIGITMAX), by = "river", sort = FALSE)
+  if(all(is.na(row))){
+    riverlayout <- merge(riverlayout, RowCal(posmatrix, digitweight, riverlayout, path, OBN, DIGITMAX), by = "river", sort = FALSE)
+    
+    row <- riverlayout$row
+    
+  } else{  
+    riverlayout <- data.frame(riverlayout, row = row)
+  }
   
   row <- riverlayout$row
   rsource <- riverlayout$rsource

@@ -1,8 +1,8 @@
 Package: rivervis
 Type: Package
 Title: River Visualisation Tool
-Version: 0.45.0
-Date: 2015-04-10
+Version: 0.46.0
+Date: 2015-05-18
 Author: Feng Mao <rivervis@outlook.com>, Yichuan Shi <yichuan@live.com>,
     and Keith Richards <ksr10@cam.ac.uk>
 Maintainer: Feng Mao <rivervis@outlook.com>
@@ -13,6 +13,6 @@ Description: This R package is a flexible and efficient tool to
 License: GPL (>= 2)
 Encoding: UTF-8
 Repository: CRAN
-Packaged: 2015-04-10 17:21:33 UTC; Fujitsu
+Packaged: 2015-05-18 21:20:30 UTC; Fujitsu
 NeedsCompilation: no
-Date/Publication: 2015-04-11 00:22:57
+Date/Publication: 2015-05-19 00:26:31

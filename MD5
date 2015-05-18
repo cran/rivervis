@@ -1,4 +1,4 @@
-51f5cdbdbcae162c2c1f2db48c832e0a *DESCRIPTION
+70d5347288be8c94d5987bfedf36c9df *DESCRIPTION
 4c2917bcdb373f3d94f5b5d1921f935c *NAMESPACE
 e96a52742d219c8b6f14feef9d04af14 *R/ImplicitFunctions.R
 a4570fb826aa755a384915fcabb8529e *R/RiverAxisLabel.R
@@ -9,7 +9,7 @@ a0b17f451c892cfe8fd3935ae44c5302 *R/RiverDirection.R
 e3dcf384e4625603c6c5d94ec7e41f60 *R/RiverDraw.R
 dcf89bbd16ae7f8ffdf4a06dc7f7bf13 *R/RiverFrame.R
 efc9a2cf39ef78fed82d4ecd7552107b *R/RiverLabel.R
-1e528a5435f050d7c6472b438d939951 *R/RiverLayout.R
+c338fd8d7f5e6dcce7e20a10279459f7 *R/RiverLayout.R
 4ad8519aba24ad75316c20d0cf2c2e9a *R/RiverMap.R
 851b7a431e002256bcec1ac5e0e1d22e *R/RiverPoint.R
 61b0cae217ffb2657cc5cff764f55c44 *R/RiverReach.R
@@ -17,7 +17,7 @@ efc9a2cf39ef78fed82d4ecd7552107b *R/RiverLabel.R
 d425468ad0e58533e246a87871cf172d *R/RiverSite.R
 85392be004290e0c93ee5b2f2407c50b *R/RiverTM.R
 ab1934b0fe12e9896fe9b34be1112490 *R/rivervis-package.R
-a006e16d84b7ddc70f036135089e2039 *data/Ballinderry.RData
+8a49c6ac747bb2852a9f79e3c7268de7 *data/Ballinderry.RData
 28cd852b243a59d43f76a0cd5a80c689 *man/Ballinderry.Rd
 40e8fccfd1eb4b584c7031bfd6f41360 *man/RiverAxisLabel.Rd
 328a4ffa408473c1c9ea50ea3e672d20 *man/RiverBar.Rd
@@ -27,7 +27,7 @@ f6eb78c6bdabc61b0171ec4f8ec544e9 *man/RiverDirection.Rd
 5424326fa01a35c277f3264de5a27d96 *man/RiverDraw.Rd
 6c780f9acaf5e3b41493bc025db2717e *man/RiverFrame.Rd
 8a0b22fde7421b739a64cd2dc1f95417 *man/RiverLabel.Rd
-be5052aee057148c7af2c8415d6a779c *man/RiverLayout.Rd
+6cefdd175ec369d11654380779cff06e *man/RiverLayout.Rd
 425af3d1402a108529c810a143771496 *man/RiverMap.Rd
 7cfc410df41ea7cd834c43bed32bd9a4 *man/RiverPoint.Rd
 a1d6daf56615087db7b518901c1751e4 *man/RiverReach.Rd

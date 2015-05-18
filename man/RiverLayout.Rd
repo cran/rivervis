@@ -4,8 +4,8 @@
 \alias{RiverLayout}
 \title{River Layout Coordinates Calculation}
 \usage{
-RiverLayout(river, length, parent, position, distance, direction = 1,
-  margin = 0.5)
+RiverLayout(river, length, parent, position, distance, row = NA,
+  direction = 1, margin = 0.5)
 }
 \arguments{
 \item{river}{a vector of river names.}
@@ -24,6 +24,13 @@ the main stream, the value is "M".}
 
 \item{distance}{a vector of distances denotes the distance between the
 mouths of each river and the mouths of each river's parent.}
+
+\item{row}{a vector of row numbers. The main stream is on row 0. In the
+river chart, rivers with negative row numbers are plotted below the main
+stream while rivers with positive row numbers are plotted above the main
+stream. If a value for row is provided, the rivers will be plotted according
+to the provided row numbers. If a value for row is not provided, a vector of
+best fit row numbers will be calculated before plotting.}
 
 \item{direction}{a value. In the river chart, rivers flow from right to left
 (\code{direction = 1}), or from left to right (\code{direction = -1}). By
